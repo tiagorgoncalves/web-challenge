@@ -1,8 +1,10 @@
 .TableItems {
-  width: 100%;
   display: grid;
   gap: 4rem;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+}
+.Main {
+  display: flex;
 }
 
 @media (max-width: 1550px) {

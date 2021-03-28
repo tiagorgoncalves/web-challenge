@@ -1,0 +1,15 @@
+.Brand {
+  position: relative;
+  width: 12rem;
+  height: 8rem;
+  background-color: grey;
+  align-items: center;
+  justify-content: center;
+}
+
+.Brand > div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
