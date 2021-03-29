@@ -6,11 +6,13 @@ import TableItem from "./TableItem/TableItem";
 import Auxiliary from "../../../hoc/Auxiliary/Auxiliary";
 import Toolbar from "../../UI/Toolbar/Toolbar";
 
+let sorted = false;
 const TableItems = (props) => {
   const [stateProdutos, setStateProdutos] = useState();
   const [statePage, setStatePage] = useState();
   const [stateFilterArray, setStateFilterArray] = useState();
   const [stateActiveFilter, setStateActiveFilter] = useState();
+  const [stateLayout, setStateLayout] = useState(false);
 
   useEffect(() => {
     if (props.brand) {
@@ -30,6 +32,7 @@ const TableItems = (props) => {
             }
             return tempArray.push(product);
           });
+
           const uniqueSet = new Set(tempFilterArray);
           const filterArray = [...uniqueSet];
           setStateFilterArray(filterArray);
@@ -62,6 +65,7 @@ const TableItems = (props) => {
     }
   }, [props.product, props.brand]);
 
+  //Toolbar
   let toolbar = null;
   function checkedFilterHandler(event) {
     let tempFilter = null;
@@ -76,7 +80,6 @@ const TableItems = (props) => {
     setStateActiveFilter(tempFilter);
     setStatePage(1);
   }
-
   if (stateFilterArray) {
     toolbar = (
       <Toolbar
@@ -85,23 +88,11 @@ const TableItems = (props) => {
       />
     );
   }
-
+  //
   let table = <Loader />;
-  if (stateProdutos && !stateActiveFilter) {
-    table = stateProdutos.map((r) => <TableItem key={r.id} {...r} />);
-  } else if (stateProdutos && stateActiveFilter) {
-    let filteredArray = stateProdutos.filter((r) =>
-      r.tag_list.includes(stateActiveFilter)
-    );
+  //page Management
 
-    table = filteredArray.map((r) => <TableItem key={r.id} {...r} />);
-  }
-
-  if (table.length > 0 && statePage === 1) {
-    table = table.slice(0, 8);
-  } else if (table.length > 0 && statePage > 1) {
-    table = table.slice(statePage, statePage + 8);
-  }
+  //
   function nextPageHandler() {
     let x = statePage + 1;
     setStatePage(x);
@@ -110,20 +101,63 @@ const TableItems = (props) => {
     let x = statePage - 1;
     setStatePage(x);
   }
+  function changeLayoutHandler() {
+    let x = !stateLayout;
+    setStateLayout(x);
+  }
+  //table Management
 
+  if (stateProdutos && !stateActiveFilter) {
+    table = stateProdutos.map((r) => (
+      <TableItem layout={stateLayout} key={r.id} {...r} />
+    ));
+  } else if (stateProdutos && stateActiveFilter) {
+    let filteredArray = stateProdutos.filter((r) =>
+      r.tag_list.includes(stateActiveFilter)
+    );
+
+    table = filteredArray.map((r) => (
+      <TableItem key={r.id} {...r} layout={stateLayout} />
+    ));
+  }
+  //
+
+  function sortRatingHandler() {
+    if (!sorted) {
+      const t = [...stateProdutos];
+      let tempTable = t.sort((a, b) => (a.rating < b.rating ? 1 : -1));
+      setStateProdutos(tempTable);
+      sorted = true;
+    } else {
+      const t = [...stateProdutos];
+      setStateProdutos(t.reverse());
+      console.log(t);
+    }
+  }
+  if (table.length > 0 && statePage === 1) {
+    table = table.slice(0, 8);
+  } else if (table.length > 0 && statePage > 1) {
+    table = table.slice(statePage, statePage + 8);
+  }
   return (
     <Auxiliary>
       <div className={classes.Main}>
         {toolbar}
         <div>
-          <div className={classes.TableItems}>{table}</div>
-          {statePage}
-          <button disabled={statePage === 1} onClick={beforePageHandler}>
-            Diminuir
-          </button>
-          <button disabled={table.length < 8} onClick={nextPageHandler}>
-            Aumentar
-          </button>
+          <button onClick={changeLayoutHandler}>Change Layout</button>
+          <button onClick={sortRatingHandler}>Sort by Rating</button>
+          <div className={stateLayout ? classes.TableList : classes.TableItems}>
+            {table}
+          </div>
+          <div className={classes.Controls}>
+            <button disabled={statePage === 1} onClick={beforePageHandler}>
+              Diminuir
+            </button>
+            <div>{statePage}</div>
+            <button disabled={table.length < 8} onClick={nextPageHandler}>
+              Aumentar
+            </button>
+          </div>
         </div>
       </div>
     </Auxiliary>

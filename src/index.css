@@ -1,4 +1,23 @@
+@import url("https://fonts.googleapis.com/css?family=Lora");
+
 body {
   margin: 0px;
   padding: 0px;
+}
+h2 {
+  font-family: "Lora";
+  font-style: italic;
+}
+* {
+  font-family: "Lora";
+}
+button {
+  background-color: #729b79;
+  border: none;
+  padding: 0.25rem 1rem;
+  border-radius: 0.5rem;
+}
+
+a {
+  text-decoration: none;
 }

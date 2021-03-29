@@ -1,12 +1,26 @@
+.Main {
+  display: flex;
+}
 .TableItems {
+  width: 80%;
   display: grid;
   gap: 4rem;
   grid-template-columns: repeat(4, 1fr);
 }
-.Main {
-  display: flex;
+.TableList {
+  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
 }
-
+.Controls {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.Controls > div {
+  margin: 1rem 2rem;
+}
 @media (max-width: 1550px) {
   .TableItems {
     grid-template-columns: repeat(3, 1fr);

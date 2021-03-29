@@ -2,7 +2,7 @@ import React from "react";
 
 const ToolbarItem = (props) => {
   return (
-    <span>
+    <div>
       <input
         type="checkbox"
         id={props.index}
@@ -10,7 +10,7 @@ const ToolbarItem = (props) => {
         value={props.filter}
       />
       <label htmlFor={props.index}>{props.filter}</label>
-    </span>
+    </div>
   );
 };
 export default ToolbarItem;

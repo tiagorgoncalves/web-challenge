@@ -1,7 +1,7 @@
 import React from "react";
 import TableItems from "../../Table/TableItems/TableItems";
 
-const BrandProducts = (props) => {
+const BrandList = (props) => {
   return (
     <div>
       <TableItems brand={props.history.location.hash} />
@@ -9,4 +9,4 @@ const BrandProducts = (props) => {
   );
 };
 
-export default BrandProducts;
+export default BrandList;
