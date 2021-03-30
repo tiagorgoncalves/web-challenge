@@ -38,12 +38,13 @@ const TableItems = (props) => {
           setStateFilterArray(filterArray);
           setStatePage(1);
           setStateProdutos(tempArray);
+          console.log(tempArray);
         });
     } else if (props.product) {
     } else {
       axios
         .get(
-          "http://makeup-api.herokuapp.com/api/v1/products.json?rating_greater_than=4.5"
+          "http://makeup-api.herokuapp.com/api/v1/products.json?rating_greater_than=4.9"
         )
         .then((response) => {
           const tempArray = [];
@@ -61,13 +62,13 @@ const TableItems = (props) => {
           setStateFilterArray(filterArray);
           setStatePage(1);
           setStateProdutos(tempArray);
+          console.log(tempArray);
         });
     }
   }, [props.product, props.brand]);
 
   //Toolbar
   let toolbar = null;
-
   function checkedFilterHandler(event) {
     let tempActiveFilter = [];
     if (stateActiveFilter.length > 0) {
@@ -81,7 +82,6 @@ const TableItems = (props) => {
       temp = tempActiveFilter.filter((f) => f !== event.target.defaultValue);
       tempActiveFilter = temp;
     }
-    console.log(tempActiveFilter);
     setStateActiveFilter(tempActiveFilter);
     setStatePage(1);
   }
@@ -96,29 +96,13 @@ const TableItems = (props) => {
   //
   let table = <Loader />;
 
-  function nextPageHandler() {
-    let x = statePage + 1;
-    setStatePage(x);
-  }
-  function beforePageHandler() {
-    let x = statePage - 1;
-    setStatePage(x);
-  }
-  function changeLayoutHandler() {
-    let x = !stateLayout;
-    setStateLayout(x);
-  }
   //table Management
-  useEffect(() => {
-    console.log("value changed");
-  }, [stateActiveFilter]);
 
   if (stateProdutos && stateActiveFilter.length === 0) {
     table = stateProdutos.map((r) => (
       <TableItem layout={stateLayout} key={r.id} {...r} />
     ));
   } else if (stateProdutos && stateActiveFilter.length > 0) {
-    console.log("aaas");
     let filteredArray = [];
     stateProdutos.map((p) => {
       // eslint-disable-next-line
@@ -131,7 +115,6 @@ const TableItems = (props) => {
     const uniqueObjects = [
       ...new Map(filteredArray.map((item) => [item.id, item])).values(),
     ];
-    console.log(uniqueObjects);
     table = uniqueObjects.map((r) => (
       <TableItem key={r.id} {...r} layout={stateLayout} />
     ));
@@ -146,13 +129,28 @@ const TableItems = (props) => {
     } else {
       const t = [...stateProdutos];
       setStateProdutos(t.reverse());
-      console.log(t);
     }
   }
-  if (table.length > 0 && statePage === 1) {
+  if (table.length && statePage === 1) {
     table = table.slice(0, 8);
-  } else if (table.length > 0 && statePage > 1) {
-    table = table.slice(statePage, statePage + 8);
+  } else if (table.length && statePage > 1) {
+    table = table.slice(8 * statePage - 8, 8 * statePage);
+  }
+  function nextPageHandler() {
+    let x = statePage + 1;
+    document.documentElement.scrollTop = 0;
+    console.log(table);
+    setStatePage(x);
+  }
+  function beforePageHandler() {
+    let x = statePage - 1;
+    document.documentElement.scrollTop = 0;
+    console.log(table);
+    setStatePage(x);
+  }
+  function changeLayoutHandler() {
+    let x = !stateLayout;
+    setStateLayout(x);
   }
   return (
     <Auxiliary>
@@ -164,16 +162,16 @@ const TableItems = (props) => {
           <div className={stateLayout ? classes.TableList : classes.TableItems}>
             {table}
           </div>
-          <div className={classes.Controls}>
-            <button disabled={statePage === 1} onClick={beforePageHandler}>
-              Diminuir
-            </button>
-            <div>{statePage}</div>
-            <button disabled={table.length < 8} onClick={nextPageHandler}>
-              Aumentar
-            </button>
-          </div>
         </div>
+      </div>
+      <div className={classes.Controls}>
+        <button disabled={statePage === 1} onClick={beforePageHandler}>
+          Diminuir
+        </button>
+        <div>{statePage}</div>
+        <button disabled={table.length < 8} onClick={nextPageHandler}>
+          Aumentar
+        </button>
       </div>
     </Auxiliary>
   );
