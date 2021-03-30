@@ -3,6 +3,12 @@
 .Loader:after {
   border-radius: 50%;
 }
+.middleLoader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .Loader {
   color: red;
   font-size: 11px;

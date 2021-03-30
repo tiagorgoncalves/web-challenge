@@ -1,12 +1,14 @@
-.TableItem {
-  border: 1px solid black;
-  height: 340px;
+.Content {
+  padding: 0 1rem;
+  position: relative;
+  color: initial;
 }
-.TableList {
-  padding: 1rem;
-  display: flex;
-  width: 95%;
-  border: 1px solid black;
+
+.TableItem {
+  border-color: lightgray;
+  border-style: solid;
+  border-width: 0 1px 0 1px;
+  height: 400px;
 }
 .TableItem img {
   padding: 1rem 4rem;
@@ -14,72 +16,69 @@
   width: 12rem;
   object-fit: cover;
 }
+.TableItem .ProductName {
+  max-height: 3.115rem;
+  font-size: 1.115rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-bottom: 0.25rem;
+}
+.ProductName:hover {
+  color: red;
+}
+.TableItem .ProductBrand {
+  max-height: 2.115rem;
+  font-size: 1.115rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-bottom: 0.25rem;
+}
+.TableItem .ProductRating {
+  margin: 0.5rem 0;
+}
+.TableItem .ProductPrice {
+  max-height: 2rem;
+  font-size: 1.5rem;
+  margin-top: 0.75rem;
+}
+
+.TableList {
+  padding: 1.5rem 1rem;
+  display: flex;
+  width: 95%;
+}
 .TableList > img {
   padding: 1rem 4rem;
   height: 12rem;
   width: 12rem;
   object-fit: cover;
 }
-.Rating {
-  position: relative;
-  width: 12rem;
-  height: 1.15rem;
+.TableList .ProductName {
+  max-height: 3.5rem;
+  font-size: 1.5rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-bottom: 0.25rem;
 }
-.RatingBackPill {
-  width: inherit;
-  height: inherit;
-  position: absolute;
-  top: 0;
-  background-color: rgb(173, 173, 173);
-  border-radius: 1rem;
+.TableList .ProductBrand {
+  max-height: 2.25rem;
+  font-size: 1.25rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-bottom: 0.25rem;
 }
-.RatingHighPill {
-  height: inherit;
-  position: absolute;
-  border-radius: 1rem 0 0 1rem;
-  top: 0;
-  height: 1.15rem;
-  background-color: rgb(0, 240, 0);
+.TableList .ProductDescription {
+  display: -webkit-box;
+  height: 60px;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
-.RatingMediumHighPill {
-  height: inherit;
-  position: absolute;
-  border-radius: 1rem 0 0 1rem;
-  top: 0;
-  height: 1.15rem;
-  background-color: rgb(136, 240, 0);
+.TableList .ProductRating {
+  margin: 1rem 0;
 }
-.RatingMediumPill {
-  height: inherit;
-  position: absolute;
-  border-radius: 1rem 0 0 1rem;
-  top: 0;
-  height: 1.15rem;
-  background-color: rgb(224, 240, 0);
-}
-.RatingLowPill {
-  height: inherit;
-  position: absolute;
-  border-radius: 1rem 0 0 1rem;
-  top: 0;
-  height: 1.15rem;
-  background-color: rgb(240, 36, 0);
-}
-.RatingFullPill {
-  height: inherit;
-  position: absolute;
-  border-radius: 1rem;
-  top: 0;
-  background-color: rgb(0, 240, 0);
-}
-.RatingValue {
-  color: black;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.Content {
-  padding: 0 1rem;
-  position: relative;
-  color: initial;
+.TableList .ProductPrice {
+  max-height: 2rem;
+  font-size: 1.5rem;
+  margin-top: 0.75rem;
 }

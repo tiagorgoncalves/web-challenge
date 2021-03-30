@@ -2,7 +2,6 @@ import React from "react";
 import Brand from "./Brand/Brand";
 import classes from "./Brands.module.css";
 const Brands = (props) => {
-  let brand = [];
   const brandArray = [
     "almay",
     "alva",
@@ -62,9 +61,37 @@ const Brands = (props) => {
     "zorah",
     "zorah biocosmetiques",
   ];
-  brandArray.map((b, index) => {
-    return brand.push(<Brand key={index} name={b} />);
+  let letters = [];
+  brandArray.map((brand) => {
+    return letters.push(brand.charAt(0));
   });
-  return <div className={classes.Brands}>{brand}</div>;
+
+  const uniqueSet = new Set(letters);
+  const Letters = [...uniqueSet];
+
+  let list = [];
+  let label = null;
+  // eslint-disable-next-line
+  Letters.map((letter) => {
+    let brandList = [];
+    // eslint-disable-next-line
+    brandArray.map((brand) => {
+      if (brand.charAt(0) === letter) {
+        brandList.push(brand);
+      }
+    });
+
+    label = (
+      <Brand key={letter} brands={brandList} letter={letter.toUpperCase()} />
+    );
+    list.push(label);
+  });
+
+  return (
+    <div>
+      <h1 className={classes.PageTitle}>Brands</h1>
+      <div className={classes.Brands}>{list}</div>
+    </div>
+  );
 };
 export default Brands;

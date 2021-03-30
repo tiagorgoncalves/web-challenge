@@ -1,66 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import classes from "./TableItem.module.css";
+import Pill from "../../../UI/Pill/Pill";
 
 const tableItem = (props) => {
   let item = null;
-  let pill = null;
-  let innerPill = null;
-  if (props.rating) {
-    const percentage = props.rating * 20;
-    if (percentage < 100 && percentage >= 85) {
-      innerPill = (
-        <div
-          className={classes.RatingHighPill}
-          style={{ width: percentage + "%" }}
-        ></div>
-      );
-    } else if (percentage < 85 && percentage >= 65) {
-      innerPill = (
-        <div
-          className={classes.RatingMediumHighPill}
-          style={{ width: percentage + "%" }}
-        ></div>
-      );
-    } else if (percentage < 65 && percentage >= 45) {
-      innerPill = (
-        <div
-          className={classes.RatingMediumPill}
-          style={{ width: percentage + "%" }}
-        ></div>
-      );
-    } else if (percentage < 45) {
-      innerPill = (
-        <div
-          className={classes.RatingLowPill}
-          style={{ width: percentage + "%" }}
-        ></div>
-      );
-    } else if (percentage === 100) {
-      innerPill = (
-        <div
-          className={classes.RatingFullPill}
-          style={{ width: percentage + "%" }}
-        ></div>
-      );
-    }
-    pill = (
-      <div className={classes.Rating}>
-        <div className={classes.RatingBackPill}></div>
-        {innerPill}
-        <div className={classes.RatingValue}>{percentage}</div>
-      </div>
-    );
-  } else {
-    pill = <span>No available rating</span>;
-  }
   if (!props.layout) {
     item = (
       <div className={classes.TableItem} onClick={props.clicked}>
         <img
           src={props.api_featured_image}
           alt=""
-          onClick={() => console.log(props.name)}
+          onClick={() => props.clicked}
         />
         <Link
           to={{
@@ -69,16 +20,17 @@ const tableItem = (props) => {
           }}
         >
           <div className={classes.Content}>
-            <div style={{ height: "5.25rem" }}>
-              <div>{props.name}</div>
-
-              <div>{props.brand}</div>
-              <div>
+            <div>
+              <div className={classes.ProductName}>{props.name}</div>
+              <div className={classes.ProductBrand}>{props.brand}</div>{" "}
+              <div className={classes.ProductRating}>
+                <Pill rating={props.rating} />
+              </div>
+              <div className={classes.ProductPrice}>
                 {(+props.price).toFixed(2)}
                 {props.price_sign ? props.price_sign : "€"}
               </div>
             </div>
-            {pill}
           </div>
         </Link>
       </div>
@@ -99,17 +51,19 @@ const tableItem = (props) => {
         >
           <div className={classes.Content}>
             <div style={{ height: "8rem" }}>
-              <div>{props.name}</div>
-              <div>{props.brand}</div>
-              <div style={{ height: "4rem", overflow: "auto" }}>
+              <div className={classes.ProductName}>{props.name}</div>
+              <div className={classes.ProductBrand}>{props.brand}</div>
+              <div className={classes.ProductDescription}>
                 {props.description}
               </div>
-              <div>
+              <div className={classes.ProductRating}>
+                <Pill rating={props.rating} />
+              </div>
+              <div className={classes.ProductPrice}>
                 {(+props.price).toFixed(2)}
                 {props.price_sign ? props.price_sign : "€"}
               </div>
             </div>
-            {pill}
           </div>
         </Link>
       </div>

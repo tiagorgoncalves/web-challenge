@@ -1,5 +1,10 @@
 .Brands {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.PageTitle {
+  text-align: center;
+  font-weight: bolder;
+  font-size: 3rem;
 }

@@ -5,7 +5,8 @@ import classes from "./TableItems.module.css";
 import TableItem from "./TableItem/TableItem";
 import Auxiliary from "../../../hoc/Auxiliary/Auxiliary";
 import Toolbar from "../../UI/Toolbar/Toolbar";
-
+import Modal from "../../UI/Modal/Modal";
+import ProductDisplay from "../../Products/ProductPage/ProductDisplay/ProductDisplay";
 let sorted = false;
 const TableItems = (props) => {
   const [stateProdutos, setStateProdutos] = useState();
@@ -13,6 +14,8 @@ const TableItems = (props) => {
   const [stateFilterArray, setStateFilterArray] = useState();
   const [stateActiveFilter, setStateActiveFilter] = useState([]);
   const [stateLayout, setStateLayout] = useState(false);
+  const [stateModal, setStateModal] = useState(false);
+  const [stateActiveProduct, setStateActiveProduct] = useState();
 
   useEffect(() => {
     if (props.brand) {
@@ -38,9 +41,32 @@ const TableItems = (props) => {
           setStateFilterArray(filterArray);
           setStatePage(1);
           setStateProdutos(tempArray);
-          console.log(tempArray);
         });
     } else if (props.product) {
+      const product = props.product.substring(1);
+      axios
+        .get(
+          "http://makeup-api.herokuapp.com/api/v1/products.json?product_type=" +
+            product
+        )
+        .then((response) => {
+          const tempArray = [];
+          const tempFilterArray = [];
+          response.data.map((product) => {
+            if (product.tag_list.length > 0) {
+              product.tag_list.map((tag) => {
+                return tempFilterArray.push(tag);
+              });
+            }
+            return tempArray.push(product);
+          });
+
+          const uniqueSet = new Set(tempFilterArray);
+          const filterArray = [...uniqueSet];
+          setStateFilterArray(filterArray);
+          setStatePage(1);
+          setStateProdutos(tempArray);
+        });
     } else {
       axios
         .get(
@@ -62,7 +88,6 @@ const TableItems = (props) => {
           setStateFilterArray(filterArray);
           setStatePage(1);
           setStateProdutos(tempArray);
-          console.log(tempArray);
         });
     }
   }, [props.product, props.brand]);
@@ -100,7 +125,12 @@ const TableItems = (props) => {
 
   if (stateProdutos && stateActiveFilter.length === 0) {
     table = stateProdutos.map((r) => (
-      <TableItem layout={stateLayout} key={r.id} {...r} />
+      <TableItem
+        layout={stateLayout}
+        key={r.id}
+        {...r}
+        clicked={() => modalOpenHandler(r.id)}
+      />
     ));
   } else if (stateProdutos && stateActiveFilter.length > 0) {
     let filteredArray = [];
@@ -116,8 +146,24 @@ const TableItems = (props) => {
       ...new Map(filteredArray.map((item) => [item.id, item])).values(),
     ];
     table = uniqueObjects.map((r) => (
-      <TableItem key={r.id} {...r} layout={stateLayout} />
+      <TableItem
+        key={r.id}
+        {...r}
+        layout={stateLayout}
+        clicked={modalOpenHandler}
+      />
     ));
+  }
+
+  let title = <h1 className={classes.PageTitle}>Destaques</h1>;
+  if (props.brand) {
+    let tempTitle = props.brand.slice(1);
+    tempTitle = tempTitle.split(" ");
+    tempTitle = tempTitle.map((t) => {
+      return t.charAt(0).toUpperCase() + t.slice(1);
+    });
+    tempTitle = tempTitle.join(" ");
+    title = <h1 className={classes.PageTitle}>{tempTitle}</h1>;
   }
   //
   function sortRatingHandler() {
@@ -132,47 +178,67 @@ const TableItems = (props) => {
     }
   }
   if (table.length && statePage === 1) {
-    table = table.slice(0, 8);
+    table = table.slice(0, 12);
   } else if (table.length && statePage > 1) {
-    table = table.slice(8 * statePage - 8, 8 * statePage);
+    table = table.slice(12 * statePage - 12, 12 * statePage);
   }
   function nextPageHandler() {
     let x = statePage + 1;
     document.documentElement.scrollTop = 0;
-    console.log(table);
     setStatePage(x);
   }
   function beforePageHandler() {
     let x = statePage - 1;
     document.documentElement.scrollTop = 0;
-    console.log(table);
     setStatePage(x);
   }
   function changeLayoutHandler() {
     let x = !stateLayout;
     setStateLayout(x);
   }
+  function modalOpenHandler(id) {
+    const tempProduct = stateProdutos.find((p) => p.id === id);
+    let activeProduct = tempProduct;
+    setStateActiveProduct(activeProduct);
+    setStateModal(true);
+  }
+  function modalCloseHandler() {
+    setStateModal(false);
+  }
   return (
     <Auxiliary>
+      {stateModal ? (
+        <Modal show={stateModal} modalClosed={modalCloseHandler}>
+          <ProductDisplay product={stateActiveProduct} />
+        </Modal>
+      ) : null}
+
+      {title}
       <div className={classes.Main}>
         {toolbar}
         <div>
-          <button onClick={changeLayoutHandler}>Change Layout</button>
-          <button onClick={sortRatingHandler}>Sort by Rating</button>
+          {stateProdutos ? (
+            <div className={classes.LayoutControls}>
+              <button onClick={changeLayoutHandler}>Change Layout</button>
+              <button onClick={sortRatingHandler}>Sort by Rating</button>
+            </div>
+          ) : null}
           <div className={stateLayout ? classes.TableList : classes.TableItems}>
             {table}
           </div>
         </div>
       </div>
-      <div className={classes.Controls}>
-        <button disabled={statePage === 1} onClick={beforePageHandler}>
-          Diminuir
-        </button>
-        <div>{statePage}</div>
-        <button disabled={table.length < 8} onClick={nextPageHandler}>
-          Aumentar
-        </button>
-      </div>
+      {stateProdutos ? (
+        <div className={classes.Controls}>
+          <button disabled={statePage === 1} onClick={beforePageHandler}>
+            Diminuir
+          </button>
+          <div>{statePage}</div>
+          <button disabled={table.length < 12} onClick={nextPageHandler}>
+            Aumentar
+          </button>
+        </div>
+      ) : null}
     </Auxiliary>
   );
 };

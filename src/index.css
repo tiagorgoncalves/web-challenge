@@ -21,3 +21,12 @@ button {
 a {
   text-decoration: none;
 }
+button:hover {
+  cursor: pointer;
+}
+button:focus {
+  outline: none;
+}
+a:visited {
+  text-decoration: none;
+}

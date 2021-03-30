@@ -22,6 +22,7 @@ const Toolbar = (props) => {
 
   return (
     <div key={props.index} className={classes.Toolbar}>
+      <h3>Tag Filters</h3>
       {toolbarItems}
     </div>
   );

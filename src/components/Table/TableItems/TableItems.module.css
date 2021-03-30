@@ -7,6 +7,9 @@
   gap: 4rem;
   grid-template-columns: repeat(4, 1fr);
 }
+.TableList > div:nth-child(2n + 1) {
+  background-color: #fafafa;
+}
 .TableList {
   gap: 1rem;
   display: grid;
@@ -20,6 +23,17 @@
 }
 .Controls > div {
   margin: 1rem 2rem;
+}
+.LayoutControls {
+  margin-bottom: 0.5rem;
+}
+.LayoutControls > button {
+  margin-right: 0.5rem;
+}
+.PageTitle {
+  text-align: center;
+  font-weight: bolder;
+  font-size: 3rem;
 }
 @media (max-width: 1550px) {
   .TableItems {
