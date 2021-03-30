@@ -12,7 +12,7 @@ const Toolbar = (props) => {
       return toolbarItems.push(
         <ToolbarItem
           key={index}
-          index={index}
+          index={index + i}
           filter={i}
           changed={props.changed}
         />

@@ -11,7 +11,7 @@ const TableItems = (props) => {
   const [stateProdutos, setStateProdutos] = useState();
   const [statePage, setStatePage] = useState();
   const [stateFilterArray, setStateFilterArray] = useState();
-  const [stateActiveFilter, setStateActiveFilter] = useState();
+  const [stateActiveFilter, setStateActiveFilter] = useState([]);
   const [stateLayout, setStateLayout] = useState(false);
 
   useEffect(() => {
@@ -67,17 +67,22 @@ const TableItems = (props) => {
 
   //Toolbar
   let toolbar = null;
+
   function checkedFilterHandler(event) {
-    let tempFilter = null;
-    if (stateActiveFilter) {
-      tempFilter = stateActiveFilter;
+    let tempActiveFilter = [];
+    if (stateActiveFilter.length > 0) {
+      let activeFilter = stateActiveFilter;
+      tempActiveFilter = [...activeFilter];
     }
     if (event.target.checked) {
-      tempFilter = event.target.defaultValue;
+      tempActiveFilter.push(event.target.defaultValue);
     } else if (!event.target.checked) {
-      tempFilter = null;
+      let temp = [];
+      temp = tempActiveFilter.filter((f) => f !== event.target.defaultValue);
+      tempActiveFilter = temp;
     }
-    setStateActiveFilter(tempFilter);
+    console.log(tempActiveFilter);
+    setStateActiveFilter(tempActiveFilter);
     setStatePage(1);
   }
   if (stateFilterArray) {
@@ -90,9 +95,7 @@ const TableItems = (props) => {
   }
   //
   let table = <Loader />;
-  //page Management
 
-  //
   function nextPageHandler() {
     let x = statePage + 1;
     setStatePage(x);
@@ -106,22 +109,34 @@ const TableItems = (props) => {
     setStateLayout(x);
   }
   //table Management
+  useEffect(() => {
+    console.log("value changed");
+  }, [stateActiveFilter]);
 
-  if (stateProdutos && !stateActiveFilter) {
+  if (stateProdutos && stateActiveFilter.length === 0) {
     table = stateProdutos.map((r) => (
       <TableItem layout={stateLayout} key={r.id} {...r} />
     ));
-  } else if (stateProdutos && stateActiveFilter) {
-    let filteredArray = stateProdutos.filter((r) =>
-      r.tag_list.includes(stateActiveFilter)
-    );
-
-    table = filteredArray.map((r) => (
+  } else if (stateProdutos && stateActiveFilter.length > 0) {
+    console.log("aaas");
+    let filteredArray = [];
+    stateProdutos.map((p) => {
+      // eslint-disable-next-line
+      return stateActiveFilter.map((f) => {
+        if (p.tag_list.includes(f)) {
+          return filteredArray.push(p);
+        }
+      });
+    });
+    const uniqueObjects = [
+      ...new Map(filteredArray.map((item) => [item.id, item])).values(),
+    ];
+    console.log(uniqueObjects);
+    table = uniqueObjects.map((r) => (
       <TableItem key={r.id} {...r} layout={stateLayout} />
     ));
   }
   //
-
   function sortRatingHandler() {
     if (!sorted) {
       const t = [...stateProdutos];
