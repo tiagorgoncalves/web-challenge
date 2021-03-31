@@ -10,7 +10,7 @@
   transform: translate(-50%, -50%);
 }
 .Loader {
-  color: red;
+  color: goldenrod;
   font-size: 11px;
   text-indent: -99999em;
   margin: 55px auto;

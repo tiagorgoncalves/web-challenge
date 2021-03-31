@@ -6,7 +6,6 @@ import Backdrop from "../Backdrop/Backdrop";
 
 const Modal = (props) => {
   let product = props.children.props.product;
-  console.log(product);
   return (
     <Auxiliary>
       <Backdrop show={props.show} clicked={props.modalClosed} />

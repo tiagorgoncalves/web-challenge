@@ -1,1 +1,7 @@
-
+Olá :)
+concluí a tarefa pedida e honestamente estou bastante satisfeito com a versão final.
+Noto um melhoramento na minha capacidade de definir um layout(não está nada de especial obviamente, mas em comparação com os meus trabalhos, estou contente) e também decifrei algumas coisas que me deram grandes dores de cabeça.
+A base do projeto passa pela TableItems, onde eu faço a call para a API no início do projeto(faço um filtro para os produtos com rating a 5 pois não acho que justifique carregar todos os produtos) e faço a criação dos filtros(estes filtros são de "ou", ou seja, basta um dos produtos ter este filtro que irá aparecer, não necessita de todos os filtros ativos). A consistência do filtro é feita através da inserção dos filtros no localStorage e, ao refrescar, confirmo se este está ocupado ou não. Caso esteja, aplico esses filtros. Foi também com este ponto da consistência que consegui salvar um bug, onde se escolhesse um produto e refrescasse a página, não tinha acesso aos seus dados, pois eu populava essa página com os props vindos da location do react-router-dom. Então, fiz o mesmo processo e inseri o produto escolhido na localStorage.
+Há alguns pontos que ainda não consigo decifrar muito bem, como o controlo das renderizações, mas penso que compensei com alguns "features" engraçados como a mudança do layout e os produtos similares.
+Agradeço o desafio e espero que fiquem satisfeitos
+Tiago Gonçalves
