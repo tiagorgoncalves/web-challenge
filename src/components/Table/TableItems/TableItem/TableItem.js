@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import classes from "./TableItem.module.css";
 import Pill from "../../../UI/Pill/Pill";
 
-const tableItem = (props) => {
+const TableItem = (props) => {
   let item = null;
   if (!props.layout) {
     item = (
@@ -38,11 +38,7 @@ const tableItem = (props) => {
   } else {
     item = (
       <div className={classes.TableList} onClick={props.clicked}>
-        <img
-          src={props.api_featured_image}
-          alt=""
-          onClick={() => console.log(props.name)}
-        />
+        <img src={props.api_featured_image} alt="" />
         <Link
           to={{
             pathname: "/product",
@@ -72,4 +68,4 @@ const tableItem = (props) => {
   return item;
 };
 
-export default tableItem;
+export default TableItem;

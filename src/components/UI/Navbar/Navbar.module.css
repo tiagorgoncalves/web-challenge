@@ -13,7 +13,10 @@
   color: #eee2df;
   margin: 0 1rem;
 }
-
+.Navbar a:hover {
+  color: goldenrod;
+  transition: 0.1s;
+}
 .NavbarLink:visited {
   color: #eee2df;
 }

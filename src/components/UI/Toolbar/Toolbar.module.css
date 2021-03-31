@@ -7,3 +7,14 @@
 .Toolbar > div {
   margin-bottom: 0.5rem;
 }
+@media (max-width: 420px) {
+  .Toolbar {
+    float: none;
+  }
+  .Toolbar > div {
+    display: flex;
+  }
+  .Toolbar > h3 {
+    display: none;
+  }
+}

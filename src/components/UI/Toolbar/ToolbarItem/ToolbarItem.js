@@ -8,6 +8,7 @@ const ToolbarItem = (props) => {
         id={props.index}
         onChange={props.changed}
         value={props.filter}
+        checked={props.isChecked}
       />
       <label htmlFor={props.index}>{props.filter}</label>
     </div>

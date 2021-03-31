@@ -7,10 +7,8 @@ const Brand = (props) => {
     // eslint-disable-next-line
     props.brands.map((brand) => {
       array.push(
-        <li>
-          {" "}
+        <li key={brand}>
           <Link
-            key={brand}
             to={{
               pathname: "/brand",
               hash: brand,
@@ -27,9 +25,7 @@ const Brand = (props) => {
   return (
     <div>
       <h2>{props.letter}</h2>
-      <ul>
-        <li>{array}</li>
-      </ul>
+      <ul>{array}</ul>
     </div>
   );
 };

@@ -24,7 +24,8 @@
   margin-bottom: 0.25rem;
 }
 .ProductName:hover {
-  color: red;
+  color: goldenrod;
+  transition: 0.1s;
 }
 .TableItem .ProductBrand {
   max-height: 2.115rem;
@@ -50,7 +51,7 @@
 .TableList > img {
   padding: 1rem 4rem;
   height: 12rem;
-  width: 12rem;
+
   object-fit: cover;
 }
 .TableList .ProductName {

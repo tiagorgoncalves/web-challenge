@@ -8,7 +8,7 @@ import Toolbar from "../../UI/Toolbar/Toolbar";
 import Modal from "../../UI/Modal/Modal";
 import ProductDisplay from "../../Products/ProductPage/ProductDisplay/ProductDisplay";
 let sorted = false;
-const TableItems = (props) => {
+const TableItems = React.memo((props) => {
   const [stateProdutos, setStateProdutos] = useState();
   const [statePage, setStatePage] = useState();
   const [stateFilterArray, setStateFilterArray] = useState();
@@ -16,7 +16,6 @@ const TableItems = (props) => {
   const [stateLayout, setStateLayout] = useState(false);
   const [stateModal, setStateModal] = useState(false);
   const [stateActiveProduct, setStateActiveProduct] = useState();
-
   useEffect(() => {
     if (props.brand) {
       const brand = props.brand.substring(1);
@@ -92,10 +91,21 @@ const TableItems = (props) => {
     }
   }, [props.product, props.brand]);
 
-  //Toolbar
+  let tempActiveFilter = [];
+  let storageFilters = [];
+  if (localStorage.getItem("filters")) {
+    storageFilters = localStorage.getItem("filters").split(",");
+  }
+
+  useEffect(() => {
+    if (storageFilters.length > 0) {
+      // eslint-disable-next-line
+      tempActiveFilter = storageFilters;
+      setStateActiveFilter(tempActiveFilter);
+    }
+  }, []);
   let toolbar = null;
   function checkedFilterHandler(event) {
-    let tempActiveFilter = [];
     if (stateActiveFilter.length > 0) {
       let activeFilter = stateActiveFilter;
       tempActiveFilter = [...activeFilter];
@@ -107,22 +117,32 @@ const TableItems = (props) => {
       temp = tempActiveFilter.filter((f) => f !== event.target.defaultValue);
       tempActiveFilter = temp;
     }
+    localStorage.setItem("filters", tempActiveFilter);
     setStateActiveFilter(tempActiveFilter);
     setStatePage(1);
   }
   if (stateFilterArray) {
-    toolbar = (
-      <Toolbar
-        items={[stateFilterArray]}
-        changed={(event) => checkedFilterHandler(event)}
-      />
-    );
+    if (storageFilters) {
+      toolbar = (
+        <Toolbar
+          storedFilters={[storageFilters]}
+          items={[stateFilterArray]}
+          changed={(event) => checkedFilterHandler(event)}
+        />
+      );
+    } else {
+      toolbar = (
+        <Toolbar
+          items={[stateFilterArray]}
+          changed={(event) => checkedFilterHandler(event)}
+        />
+      );
+    }
   }
   //
   let table = <Loader />;
 
   //table Management
-
   if (stateProdutos && stateActiveFilter.length === 0) {
     table = stateProdutos.map((r) => (
       <TableItem
@@ -150,22 +170,32 @@ const TableItems = (props) => {
         key={r.id}
         {...r}
         layout={stateLayout}
-        clicked={modalOpenHandler}
+        clicked={() => modalOpenHandler(r.id)}
       />
     ));
   }
+  let finalTitle = "Destaques";
 
-  let title = <h1 className={classes.PageTitle}>Destaques</h1>;
   if (props.brand) {
     let tempTitle = props.brand.slice(1);
-    tempTitle = tempTitle.split(" ");
+    if (tempTitle.includes("%20")) {
+      tempTitle = tempTitle.split("%20");
+    } else {
+      tempTitle = tempTitle.split(" ");
+    }
     tempTitle = tempTitle.map((t) => {
       return t.charAt(0).toUpperCase() + t.slice(1);
     });
-    tempTitle = tempTitle.join(" ");
-    title = <h1 className={classes.PageTitle}>{tempTitle}</h1>;
+    finalTitle = tempTitle.join(" ");
+  } else if (props.product) {
+    let tempTitle = props.product.slice(1);
+    tempTitle = tempTitle.split("_");
+    tempTitle = tempTitle.map((t) => {
+      return t.charAt(0).toUpperCase() + t.slice(1);
+    });
+    finalTitle = tempTitle.join(" ");
   }
-  //
+  let title = <h1 className={classes.PageTitle}>{finalTitle}</h1>;
   function sortRatingHandler() {
     if (!sorted) {
       const t = [...stateProdutos];
@@ -241,6 +271,6 @@ const TableItems = (props) => {
       ) : null}
     </Auxiliary>
   );
-};
+});
 
-export default TableItems;
+export default React.memo(TableItems);

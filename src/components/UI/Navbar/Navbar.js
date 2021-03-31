@@ -18,6 +18,9 @@ const Navbar = (props) => {
     },
   ];
   let navbarLinks = null;
+  function onChangePage() {
+    localStorage.removeItem("filters");
+  }
   navbarLinks = links.map((link) => {
     return (navbarLinks = (
       <Link key={link.name} className={classes.NavbarLink} to={link.pathName}>
@@ -27,7 +30,7 @@ const Navbar = (props) => {
   });
   return (
     <div className={classes.Navbar}>
-      <div>{navbarLinks}</div>
+      <div onClick={() => onChangePage()}>{navbarLinks}</div>
     </div>
   );
 };

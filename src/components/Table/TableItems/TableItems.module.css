@@ -35,7 +35,7 @@
   font-weight: bolder;
   font-size: 3rem;
 }
-@media (max-width: 1550px) {
+@media (max-width: 1480px) {
   .TableItems {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -50,5 +50,34 @@
 @media (max-width: 720px) {
   .TableItems {
     grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 420px) {
+  .Main {
+    display: block;
+  }
+  .LayoutControls {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .LayoutControls > :first-child {
+    display: none;
+  }
+  .PageTitle {
+    height: 3rem;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 2rem;
+  }
+  .TableItems {
+    width: 100%;
+  }
+  .TableItems > div {
+    width: 80%;
+    align-self: center;
+    justify-self: center;
   }
 }

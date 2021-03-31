@@ -8,16 +8,28 @@ const Toolbar = (props) => {
   if (tempArray.length === 0) {
     toolbarItems = <p>no tags available</p>;
   } else {
-    tempArray.map((i, index) => {
-      return toolbarItems.push(
-        <ToolbarItem
-          key={index}
-          index={index + i}
-          filter={i}
-          changed={props.changed}
-        />
-      );
-    });
+    if (props.storedFilters) {
+      let tempFilters = props.storedFilters[0];
+      // eslint-disable-next-line
+      tempArray.map((i, index) => {
+        let isChecked = false;
+        // eslint-disable-next-line
+        tempFilters.map((f) => {
+          if (i === f) {
+            isChecked = true;
+          }
+        });
+        toolbarItems.push(
+          <ToolbarItem
+            key={index}
+            index={index + i}
+            filter={i}
+            isChecked={isChecked}
+            changed={props.changed}
+          />
+        );
+      });
+    }
   }
 
   return (

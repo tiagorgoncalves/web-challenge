@@ -1,10 +1,33 @@
 .Brands {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
+}
+.Brands > div {
+  padding-left: 4rem;
+}
+.Brands > div:nth-child(8n + 1),
+.Brands > div:nth-child(8n + 2),
+.Brands > div:nth-child(8n + 3),
+.Brands > div:nth-child(8n + 4) {
+  background-color: #fafafa;
 }
 .PageTitle {
   text-align: center;
   font-weight: bolder;
   font-size: 3rem;
+}
+@media (max-width: 1100px) {
+  .Brands {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 860px) {
+  .Brands {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 580px) {
+  .Brands {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
